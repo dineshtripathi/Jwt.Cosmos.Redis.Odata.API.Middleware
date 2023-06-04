@@ -26,9 +26,7 @@ public class AuthorizedAccountEndpointClient
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(_endpointRoute) || string.IsNullOrWhiteSpace(orgId))
-        {
             return Enumerable.Empty<AuthorizedAccount>();
-        }
 
         if (_httpClient == null)
             return Enumerable.Empty<AuthorizedAccount>();

@@ -7,7 +7,8 @@ namespace JWTClaimsExtractor.Jwt;
 
 public class JwtClaimsExtractor
 {
-    public async Task<CustomUser> ExtractAsync(JwtSecurityToken? jwt, AuthorizedAccountEndpointClient orgService, CancellationToken cancellationToken)
+    public async Task<CustomUser> ExtractAsync(JwtSecurityToken? jwt, AuthorizedAccountEndpointClient orgService,
+        CancellationToken cancellationToken)
     {
         if (jwt == null)
             throw new ArgumentNullException(nameof(jwt));
@@ -18,7 +19,8 @@ public class JwtClaimsExtractor
             throw new Exception("No claims found in the JWT");
 
         var orgId = GetClaimValue(claims, CustomClaimTypes.OrgId);
-        var accounts = await orgService.GetAuthorizedAccounts(orgId, cancellationToken) ?? new List<AuthorizedAccount>();
+        var accounts = await orgService.GetAuthorizedAccounts(orgId, cancellationToken) ??
+                       new List<AuthorizedAccount>();
 
         return new CustomUser
         (
@@ -59,4 +61,3 @@ public class JwtClaimsExtractor
         throw new Exception($"Claim {claimType} could not be parsed to a Boolean.");
     }
 }
-

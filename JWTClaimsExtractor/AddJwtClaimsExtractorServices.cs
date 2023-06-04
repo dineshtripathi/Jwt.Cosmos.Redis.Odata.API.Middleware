@@ -21,7 +21,7 @@ public static class JwtClaimsExtractorServices
         services.AddTransient<JwtParser>();
         services.AddTransient<IJwtTokenExtractor, JwtTokenExtractor>();
         services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
-        services.AddTransient<ITokenValidator,TokenValidator>();
+        services.AddTransient<ITokenValidator, TokenValidator>();
 
         return services;
     }

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using JWTClaimsExtractor.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace JWTClaimsExtractor.Middleware;
@@ -38,25 +39,5 @@ public class JwtExceptionMiddleware
 
         var result = JsonSerializer.Serialize(new { error = exception.Message });
         return context.Response.WriteAsync(result);
-    }
-}
-
-public class HttpException : Exception
-{
-    public int StatusCode { get; }
-
-    public HttpException(int statusCode)
-    {
-        StatusCode = statusCode;
-    }
-
-    public HttpException(int statusCode, string message) : base(message)
-    {
-        StatusCode = statusCode;
-    }
-
-    public HttpException(int statusCode, string message, Exception inner) : base(message, inner)
-    {
-        StatusCode = statusCode;
     }
 }

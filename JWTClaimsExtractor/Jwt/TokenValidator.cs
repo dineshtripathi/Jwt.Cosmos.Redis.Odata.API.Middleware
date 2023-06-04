@@ -15,6 +15,7 @@ public class TokenValidator : ITokenValidator
     {
         _tokenConfigOptions = tokenConfigOptions.Value;
     }
+
     public ClaimsPrincipal ValidateToken(string token, TokenValidationParameters validationParameters)
     {
         var handler = new JwtSecurityTokenHandler();

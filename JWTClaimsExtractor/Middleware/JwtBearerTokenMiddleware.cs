@@ -78,7 +78,6 @@ namespace JWTClaimsExtractor.Middleware;
 //    }
 //}
 
-
 public class JwtBearerTokenMiddleware
 {
     private readonly AppSettings _appSettingsOptions;
@@ -88,7 +87,8 @@ public class JwtBearerTokenMiddleware
     private readonly RequestDelegate _next;
     private readonly string claimName;
 
-    public JwtBearerTokenMiddleware(RequestDelegate next, IOptions<AuthorizedAccountEndpointOptions> authorizedEndpointOptions,
+    public JwtBearerTokenMiddleware(RequestDelegate next,
+        IOptions<AuthorizedAccountEndpointOptions> authorizedEndpointOptions,
         IOptions<AppSettings> appSettingsOptions, IJwtTokenExtractor jwtTokenExtractor,
         IJwtTokenHandler jwtTokenHandler, ITokenValidator jwTokenValidator, ILogger<JwtBearerTokenMiddleware> logger)
     {
@@ -109,7 +109,8 @@ public class JwtBearerTokenMiddleware
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync(JsonSerializer.Serialize(new { error = "Missing or incorrect authorization header" }));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+                {error = "Missing or incorrect authorization header"}));
             return;
         }
 
@@ -142,12 +143,8 @@ public class JwtBearerTokenMiddleware
 
         var identity = context.User.Identity as ClaimsIdentity;
         if (identity != null && identity.IsAuthenticated)
-        {
             identity.AddClaims(claims);
-        }
         else
-        {
             context.User = new ClaimsPrincipal(new ClaimsIdentity(claims));
-        }
     }
 }
