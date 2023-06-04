@@ -5,8 +5,13 @@ namespace JWTClaimsExtractor;
 
 public static class MiddlewareExtensions
 {
-    public static IApplicationBuilder UseJwtMiddleware(this IApplicationBuilder builder)
+    public static IApplicationBuilder UseJwtTokenClaimsMiddleware(this IApplicationBuilder builder)
     {
-        return builder.UseMiddleware<JwtMiddleware>();
+        return builder.UseMiddleware<JwtBearerTokenMiddleware>();
+    }
+
+    public static IApplicationBuilder UseJwtExceptionMiddleware(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<JwtExceptionMiddleware>();
     }
 }

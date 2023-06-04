@@ -13,12 +13,15 @@ public static class JwtClaimsExtractorServices
         IConfiguration configuration)
     {
         services.Configure<AuthorizedAccountEndpointOptions>(configuration.GetSection("AuthorizedAccountEndpoint"));
+        services.Configure<JwtTokenConfiguration>(configuration.GetSection("JwtTokenConfiguration"));
+        services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
         services.AddTransient<AuthorizedAccountEndpointClient>();
         services.AddTransient<JwtClaims>();
         services.AddTransient<JwtClaimsExtractor>();
         services.AddTransient<JwtParser>();
         services.AddTransient<IJwtTokenExtractor, JwtTokenExtractor>();
         services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
+        services.AddTransient<ITokenValidator,TokenValidator>();
 
         return services;
     }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using JWTClaimsExtractor.Claims;
+﻿using JWTClaimsExtractor.Claims;
 using JWTClaimsExtractor.ConfigSection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;

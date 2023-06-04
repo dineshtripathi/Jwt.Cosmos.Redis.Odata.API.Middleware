@@ -12,6 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddJwtClaimsExtractorServices(builder.Configuration);
 var app = builder.Build();
 
+app.UseJwtExceptionMiddleware();
+app.UseExceptionHandler("/error");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -19,9 +21,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandler("/error");
-app.UseJwtMiddleware();
-app.UseExceptionHandler("/error");
+
+
+app.UseJwtTokenClaimsMiddleware();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
