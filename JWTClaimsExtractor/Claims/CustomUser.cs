@@ -1,7 +1,7 @@
 ﻿namespace JWTClaimsExtractor.Claims;
 
 public record CustomUser(
-    IEnumerable<AuthorizedAccount>? AuthorizedAccounts,
+  //  IEnumerable<AuthorizedAccount>? AuthorizedAccounts,
     //Guid? CorrelationId = default,
     //string? Email = default,
     //Guid? Sub = default,
@@ -12,7 +12,7 @@ public record CustomUser(
     //string? Name = default,
     //bool? IsTpiConsultancy = default,
     //string? OrgName = default,
-    IDictionary<string, string> AdditionalClaims = default!)
+    IDictionary<string, object> AdditionalClaims = default!)
 {
 
 };

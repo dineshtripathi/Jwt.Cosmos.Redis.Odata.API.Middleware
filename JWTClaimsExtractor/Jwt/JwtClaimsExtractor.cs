@@ -22,8 +22,8 @@ public class JwtClaimsExtractor
         var orgId = GetClaimValue(claims, CustomClaimTypes.OrgId);
         var accounts = await orgService.GetAuthorizedAccounts(orgId, cancellationToken) ??
                        new List<AuthorizedAccount>();
-        var additionalClaims = new Dictionary<string, string>();
-        additionalClaims["AuthorizedUserAccounts"]=JsonConvert.SerializeObject(accounts);
+        var additionalClaims = new Dictionary<string, object>();
+        additionalClaims["AuthorizedUserAccounts"]= accounts;
         foreach (var claim in claims)
         {
            // if (claim.Type != CustomClaimTypes.OrgId && claim.Type != CustomClaimTypes.CorrelationId && claim.Type != CustomClaimTypes.Email && claim.Type != CustomClaimTypes.Sub && claim.Type != CustomClaimTypes.GivenName && claim.Type != CustomClaimTypes.FamilyName && claim.Type != CustomClaimTypes.OrgRole && claim.Type != CustomClaimTypes.Name && claim.Type != CustomClaimTypes.IsTpiConsultancy && claim.Type != CustomClaimTypes.OrgName)
@@ -34,7 +34,7 @@ public class JwtClaimsExtractor
 
         return new CustomUser
         (
-            accounts,
+          //  accounts,
             //ParseGuidClaim(claims, CustomClaimTypes.CorrelationId),
             //GetClaimValue(claims, CustomClaimTypes.Email),
             //ParseGuidClaim(claims, CustomClaimTypes.Sub),

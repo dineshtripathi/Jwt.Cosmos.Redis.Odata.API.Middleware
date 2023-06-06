@@ -91,7 +91,9 @@ public static class JwtClaimsExtractorServices
                         {
                             foreach (var claim in user.AdditionalClaims)
                             {
-                                identity.AddClaim(new Claim(claim.Key, claim.Value));
+                                var claimValue = claim.Value != null ? JsonSerializer.Serialize(claim.Value) : string.Empty;
+
+                                identity.AddClaim(new Claim(claim.Key, claimValue));
                             }
                         }
 
