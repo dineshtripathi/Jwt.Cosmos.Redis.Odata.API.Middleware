@@ -12,7 +12,7 @@ public class AuthorizedAccountEndpointClient
 
     public AuthorizedAccountEndpointClient(IOptions<AuthorizedAccountEndpointOptions> options)
     {
-        if (string.IsNullOrEmpty(_endpointRoute) || string.IsNullOrWhiteSpace(options.Value.BaseUri) ||
+        if (string.IsNullOrEmpty(options.Value.EndpointRoute) || string.IsNullOrWhiteSpace(options.Value.BaseUri) ||
             string.IsNullOrWhiteSpace(options.Value.ApiKey)) return;
         _httpClient = new HttpClient
         {

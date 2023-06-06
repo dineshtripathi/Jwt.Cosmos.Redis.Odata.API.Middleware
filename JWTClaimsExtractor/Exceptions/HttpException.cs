@@ -2,8 +2,6 @@
 
 public class HttpException : Exception
 {
-    public int StatusCode { get; }
-
     public HttpException(int statusCode) : this(statusCode, $"Response failed with status code: {statusCode}")
     {
     }
@@ -17,4 +15,6 @@ public class HttpException : Exception
     {
         StatusCode = statusCode;
     }
+
+    public int StatusCode { get; }
 }

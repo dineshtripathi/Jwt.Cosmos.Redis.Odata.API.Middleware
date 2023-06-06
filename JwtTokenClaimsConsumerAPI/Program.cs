@@ -20,8 +20,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-app.UseJwtTokenClaimsMiddleware();
+if (builder.Configuration["TEST_MODE"] == "JWT_BEARER")
+{
+    app.UseAuthentication();
+}
+if (builder.Configuration["TEST_MODE"] == "JWT_EXCEPTION_MIDDLEWARE")
+{
+    app.UseJwtTokenClaimsMiddleware();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
