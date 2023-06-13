@@ -10,29 +10,35 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddJwtClaimsExtractorServices(builder.Configuration);
 var app = builder.Build();
+//app.UseExceptionHandler("/error");
 
-app.UseJwtExceptionMiddleware();
-app.UseExceptionHandler("/error");
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseRouting();
 
 if (builder.Configuration["TEST_MODE"] == "JWT_BEARER")
 {
     app.UseAuthentication();
 }
+
+//app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+  //  app.UseSwagger();
+ //   app.UseSwaggerUI();
+}
 if (builder.Configuration["TEST_MODE"] == "JWT_EXCEPTION_MIDDLEWARE")
 {
-    app.UseJwtTokenClaimsMiddleware();
+   // app.UseJwtTokenClaimsMiddleware();
 }
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
-app.MapControllers();
 
 app.Run();

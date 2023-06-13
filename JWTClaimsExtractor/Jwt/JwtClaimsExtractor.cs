@@ -1,15 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 using JWTClaimsExtractor.Claims;
 using JWTClaimsExtractor.Services;
-using Newtonsoft.Json;
 
 namespace JWTClaimsExtractor.Jwt;
 
 public class JwtClaimsExtractor
 {
-    public async Task<CustomUser> ExtractAsync(JwtSecurityToken? jwt, AuthorizedAccountEndpointClient orgService,
-        CancellationToken cancellationToken)
+    public async Task<CustomUser> ExtractAsync(JwtSecurityToken? jwt, AuthorizedAccountEndpointClient orgService, CancellationToken cancellationToken)
     {
         if (jwt == null)
             throw new ArgumentNullException(nameof(jwt));
@@ -19,56 +18,44 @@ public class JwtClaimsExtractor
         if (!claims.Any())
             throw new Exception("No claims found in the JWT");
 
-        var orgId = GetClaimValue(claims, CustomClaimTypes.OrgId);
-        var accounts = await orgService.GetAuthorizedAccounts(orgId, cancellationToken) ??
-                       new List<AuthorizedAccount>();
-        var additionalClaims = new Dictionary<string, object>();
-        additionalClaims["AuthorizedUserAccounts"]= accounts;
-        foreach (var claim in claims)
-        {
-           // if (claim.Type != CustomClaimTypes.OrgId && claim.Type != CustomClaimTypes.CorrelationId && claim.Type != CustomClaimTypes.Email && claim.Type != CustomClaimTypes.Sub && claim.Type != CustomClaimTypes.GivenName && claim.Type != CustomClaimTypes.FamilyName && claim.Type != CustomClaimTypes.OrgRole && claim.Type != CustomClaimTypes.Name && claim.Type != CustomClaimTypes.IsTpiConsultancy && claim.Type != CustomClaimTypes.OrgName)
-            {
-                additionalClaims[claim.Type] = claim.Value;
-            }
-        }
+        var additionalClaims = await BuildAdditionalClaims(claims, orgService, cancellationToken);
 
-        return new CustomUser
-        (
-          //  accounts,
-            //ParseGuidClaim(claims, CustomClaimTypes.CorrelationId),
-            //GetClaimValue(claims, CustomClaimTypes.Email),
-            //ParseGuidClaim(claims, CustomClaimTypes.Sub),
-            //GetClaimValue(claims, CustomClaimTypes.GivenName),
-            //GetClaimValue(claims, CustomClaimTypes.FamilyName),
-            //ParseGuidClaim(claims, CustomClaimTypes.OrgId),
-            //GetClaimValue(claims, CustomClaimTypes.OrgRole),
-            //GetClaimValue(claims, CustomClaimTypes.Name),
-            //ParseBoolClaim(claims, CustomClaimTypes.IsTpiConsultancy),
-            //GetClaimValue(claims, CustomClaimTypes.OrgName),
-            additionalClaims
-        );
+        return new CustomUser(additionalClaims);
     }
 
+    private static async Task<Dictionary<string, object>> BuildAdditionalClaims(IEnumerable<Claim> claims, AuthorizedAccountEndpointClient orgService, CancellationToken cancellationToken)
+    {
+        var additionalClaims = new Dictionary<string, object>();
+        var orgId = GetClaimValue(claims, CustomClaimTypes.OrgId);
+        var accounts = await orgService.GetAuthorizedAccounts(orgId, cancellationToken) ?? new List<AuthorizedAccount>();
+
+        additionalClaims["AuthorizedUserAccounts"] = accounts;
+
+        foreach (var claim in claims)
+        {
+            additionalClaims[claim.Type] = claim.Value;
+        }
+
+        return additionalClaims;
+    }
+    public ClaimsIdentity GetIdentityFromUser(CustomUser user, string schemeName)
+    {
+        var identity = new ClaimsIdentity(schemeName);
+
+        foreach (var claim in user.AdditionalClaims)
+        {
+            var claimValue = claim.Value != null ? JsonSerializer.Serialize(claim.Value) : string.Empty;
+            identity.AddClaim(new Claim(claim.Key, claimValue));
+        }
+
+        var authorisedUserClaim = new Claim("AuthorisedUser", JsonSerializer.Serialize(user));
+        identity.AddClaim(authorisedUserClaim);
+
+        return identity;
+    }
     private static string? GetClaimValue(IEnumerable<Claim> claims, string claimType)
     {
         return claims.FirstOrDefault(c => c.Type == claimType)?.Value;
     }
 
-    private static Guid ParseGuidClaim(IEnumerable<Claim> claims, string claimType)
-    {
-        var claimValue = GetClaimValue(claims, claimType);
-        if (Guid.TryParse(claimValue, out var guidValue))
-            return guidValue;
-
-        throw new Exception($"Claim {claimType} could not be parsed to a Guid.");
-    }
-
-    private static bool ParseBoolClaim(IEnumerable<Claim> claims, string claimType)
-    {
-        var claimValue = GetClaimValue(claims, claimType);
-        if (bool.TryParse(claimValue, out var boolValue))
-            return boolValue;
-
-        throw new Exception($"Claim {claimType} could not be parsed to a Boolean.");
-    }
 }

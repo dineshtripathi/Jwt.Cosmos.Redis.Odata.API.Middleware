@@ -7,4 +7,5 @@ public interface ITokenValidator
 {
     ClaimsPrincipal ValidateToken(string token, TokenValidationParameters validationParameters);
     void ValidateToken(string token);
+    TokenValidationParameters GetValidationParameters();
 }

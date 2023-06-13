@@ -22,9 +22,9 @@ public class TokenValidator : ITokenValidator
         return handler.ValidateToken(token, validationParameters, out _);
     }
 
-    public void ValidateToken(string token)
+    public TokenValidationParameters GetValidationParameters()
     {
-        var validationParameters = new TokenValidationParameters
+        return new TokenValidationParameters
         {
             ValidateIssuer = _tokenConfigOptions.ValidateIssuer,
             ValidateAudience = _tokenConfigOptions.ValidateAudience,
@@ -36,7 +36,10 @@ public class TokenValidator : ITokenValidator
             ValidAudience = _tokenConfigOptions.ValidAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenConfigOptions.IssuerSigningKey))
         };
+    }
 
-        ValidateToken(token, validationParameters);
+    public void ValidateToken(string token)
+    {
+        ValidateToken(token, GetValidationParameters());
     }
 }
