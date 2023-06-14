@@ -65,8 +65,7 @@ namespace JwtTokenGenerateSigningKey
                 (securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             //  Finally create a Token
-            var header = new JwtHeader(credentials);
-            header.Add("kid","dineshtripathitesttoken");
+            var header = new JwtHeader(credentials) {{"kid", "dineshtripathitesttoken"}};
             //Some PayLoad that contain information about the  customer
 
             var expirationTime = DateTime.UtcNow.AddHours(1);

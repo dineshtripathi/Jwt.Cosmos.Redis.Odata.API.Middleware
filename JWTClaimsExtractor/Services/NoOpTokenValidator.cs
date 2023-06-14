@@ -10,7 +10,7 @@ public class NoOpTokenValidator : ISecurityTokenValidator
         return true; // All tokens are considered valid
     }
 
-    public ClaimsPrincipal ValidateToken(string securityToken, TokenValidationParameters validationParameters, out SecurityToken validatedToken)
+    public ClaimsPrincipal ValidateToken(string securityToken, TokenValidationParameters validationParameters, out SecurityToken? validatedToken)
     {
         validatedToken = null;
         var identity = new ClaimsIdentity();

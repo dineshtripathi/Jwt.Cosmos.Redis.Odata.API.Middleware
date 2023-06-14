@@ -42,7 +42,7 @@ public class JwtClaimsExtractor
     {
         var identity = new ClaimsIdentity(schemeName);
 
-        foreach (var claim in user.AdditionalClaims)
+        foreach (var claim in user.JwtCustomClaims)
         {
             var claimValue = claim.Value != null ? JsonSerializer.Serialize(claim.Value) : string.Empty;
             identity.AddClaim(new Claim(claim.Key, claimValue));

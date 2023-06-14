@@ -29,8 +29,11 @@ public class JwtCustomUserFromClaimsController : ODataController
     {
         var claims = HttpContext.User.Claims;
         var userJson = User.FindFirst(c => c.Type == _options.CustomClaimName)?.Value;
+        if (userJson == null)
+            return BadRequest();
         var user = JsonSerializer.Deserialize<CustomUser>(userJson);
 
         return Ok(user);
+
     }
 }

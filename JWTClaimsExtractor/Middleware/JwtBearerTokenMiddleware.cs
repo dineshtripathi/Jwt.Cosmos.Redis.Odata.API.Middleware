@@ -12,9 +12,78 @@ using Microsoft.Extensions.Options;
 namespace JWTClaimsExtractor.Middleware;
 
 
-
 public class JwtBearerTokenMiddleware
 {
+    private readonly AppSettings _appSettingsOptions;
+    private readonly ITokenValidator _jwTokenValidator;
+    private readonly IJwtTokenExtractor _jwtTokenExtractor;
+    private readonly IJwtTokenHandler _jwtTokenHandler;
+    private readonly RequestDelegate _next;
+    private readonly string _claimName;
+
+    public JwtBearerTokenMiddleware(RequestDelegate next,
+        IOptions<AuthorizedAccountEndpointOptions> authorizedEndpointOptions,
+        IOptions<AppSettings> appSettingsOptions, IJwtTokenExtractor jwtTokenExtractor,
+        IJwtTokenHandler jwtTokenHandler, ITokenValidator jwTokenValidator, ILogger<JwtBearerTokenMiddleware> logger)
+    {
+        _next = next;
+        _appSettingsOptions = appSettingsOptions.Value;
+        _jwtTokenExtractor = jwtTokenExtractor;
+        _jwtTokenHandler = jwtTokenHandler;
+        _jwTokenValidator = jwTokenValidator;
+        _claimName = string.IsNullOrWhiteSpace(authorizedEndpointOptions?.Value?.CustomClaimName)
+            ? "ClaimsUser"
+            : authorizedEndpointOptions.Value.CustomClaimName;
+    }
+
+    public async Task Invoke(HttpContext context, AuthorizedAccountEndpointClient authorizedAccountEndpointClient)
+    {
+        // Extract the token from the Authorization header
+        if (!_jwtTokenExtractor.TryExtractToken(context, out var token))
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+            {error = "Missing or incorrect authorization header"}));
+            return;
+        }
+
+        try
+        {
+            if (token != null)
+            {
+                if (_appSettingsOptions.ValidatedJwtToken)
+                    _jwTokenValidator.ValidateToken(token);
+
+                var user = await _jwtTokenHandler.HandleTokenAsync(token, authorizedAccountEndpointClient,
+                    context.RequestAborted);
+                AddUserClaimToContext(context, _claimName, user);
+            }
+
+            await _next(context);
+        }
+        catch (Exception exception)
+        {
+            throw new AuthenticationException("Invalid Token passed", exception);
+        }
+    }
+
+    private static void AddUserClaimToContext(HttpContext context, string claimName, CustomUser user)
+    {
+        var claims = new List<Claim>
+        {
+            new(claimName, JsonSerializer.Serialize(user))
+        };
+
+        if (context.User.Identity is ClaimsIdentity {IsAuthenticated: true} identity)
+            identity.AddClaims(claims); 
+    }
+}
+    
+
+
+//public class JwtBearerTokenMiddleware
+//{
     //private readonly AppSettings _appSettingsOptions;
     //private readonly ITokenValidator _jwTokenValidator;
     //private readonly IJwtTokenExtractor _jwtTokenExtractor;
@@ -82,4 +151,4 @@ public class JwtBearerTokenMiddleware
     //    else
     //        context.User = new ClaimsPrincipal(new ClaimsIdentity(claims));
     //}
-}
+//}

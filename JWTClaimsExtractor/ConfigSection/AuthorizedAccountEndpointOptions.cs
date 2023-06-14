@@ -2,8 +2,8 @@
 
 public class AuthorizedAccountEndpointOptions
 {
-    public string BaseUri { get; set; }
-    public string ApiKey { get; set; }
-    public string EndpointRoute { get; set; }
-    public string CustomClaimName { get; set; }
+    public string BaseUri { get; set; } = string.Empty;
+    public string ApiKey { get; set; } = string.Empty;
+    public string EndpointRoute { get; set; } = string.Empty;
+    public string CustomClaimName { get; set; }=string.Empty;
 }

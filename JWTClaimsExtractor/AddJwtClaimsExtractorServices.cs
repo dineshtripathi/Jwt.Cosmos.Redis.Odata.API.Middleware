@@ -52,8 +52,8 @@ public static class JwtClaimsExtractorServices
             loggingBuilder.AddFilter("Microsoft.AspNetCore.Authentication.JwtBearer", LogLevel.Debug)
                 .AddConsole(); // Use the console logging provider
         });
-        var tokenValidationEnabled = bool.Parse(configuration["ValidatedJwtToken"]);
-
+        var tokenValidationEnabled = bool.Parse(configuration["ValidatedJwtToken"] ?? string.Empty);
+        
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -67,48 +67,126 @@ public static class JwtClaimsExtractorServices
                     IssuerSigningKey =
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenConfiguration.IssuerSigningKey))
                 };
-                options.Events = new JwtBearerEvents
+                if (tokenValidationEnabled)
                 {
-                    OnTokenValidated = async context =>
+                    options.Events = new JwtBearerEvents
                     {
-                        var jwtClaimsExtractor =
-                            context.HttpContext.RequestServices.GetRequiredService<JwtClaimsExtractor>();
-                        var authorizedAccountEndpointClient = context.HttpContext.RequestServices
-                            .GetRequiredService<AuthorizedAccountEndpointClient>();
-
-                        if (context.SecurityToken is not JwtSecurityToken token)
+                        OnTokenValidated = async context =>
                         {
-                            context.Fail("Received token is not a valid JWT");
-                            return;
-                        }
+                            var jwtClaimsExtractor =
+                                context.HttpContext.RequestServices.GetRequiredService<JwtClaimsExtractor>();
+                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices
+                                .GetRequiredService<AuthorizedAccountEndpointClient>();
+
+                            if (context.SecurityToken is not JwtSecurityToken token)
+                            {
+                                context.Fail("Received token is not a valid JWT");
+                                return;
+                            }
 
 
-                        CustomUser customUser;
-                        if (tokenValidationEnabled)
+                            CustomUser customUser;
+                            if (tokenValidationEnabled)
+                            {
+                                var jwtTokenHandler =
+                                    context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
+                                customUser = await jwtTokenHandler.HandleTokenAsync(token.RawData,
+                                    authorizedAccountEndpointClient, context.HttpContext.RequestAborted);
+                            }
+                            else
+                            {
+                                customUser = await jwtClaimsExtractor.ExtractAsync(token, authorizedAccountEndpointClient,
+                                    context.HttpContext.RequestAborted);
+                            }
+
+                            var identity = jwtClaimsExtractor.GetIdentityFromUser(customUser, context.Scheme.Name);
+                            context.Principal = new ClaimsPrincipal(identity);
+                            context.Success();
+                        },
+                        OnAuthenticationFailed = context =>
                         {
-                            var jwtTokenHandler =
-                                context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
-                            customUser = await jwtTokenHandler.HandleTokenAsync(token.RawData,
-                                authorizedAccountEndpointClient, context.HttpContext.RequestAborted);
-                        }
-                        else
+                            var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
+                            var logger = loggerFactory.CreateLogger("JwtClaimsExtractorServices");
+                            logger.LogError(context.Exception.Message);
+                            return Task.CompletedTask;
+                        },
+                        OnMessageReceived = context =>
                         {
-                            customUser = await jwtClaimsExtractor.ExtractAsync(token, authorizedAccountEndpointClient,
-                                context.HttpContext.RequestAborted);
-                        }
+                            var jwtTokenHandler = context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
+                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<AuthorizedAccountEndpointClient>();
+                            var tokenValidator = context.HttpContext.RequestServices.GetRequiredService<ITokenValidator>();
 
-                        var identity = jwtClaimsExtractor.GetIdentityFromUser(customUser, context.Scheme.Name);
-                        context.Principal = new ClaimsPrincipal(identity);
-                        context.Success();
-                    },
-                    OnAuthenticationFailed = context =>
+                            var token = context.Token;
+
+                            try
+                            {
+                                if (token != null)
+                                {
+                                    tokenValidator.ValidateToken(token);
+                                    var customUser = jwtTokenHandler.HandleTokenAsync(token,
+                                        authorizedAccountEndpointClient, context.HttpContext.RequestAborted).Result;
+
+                                    var jwtClaimsExtractor = context.HttpContext.RequestServices
+                                        .GetRequiredService<JwtClaimsExtractor>();
+                                    var identity =
+                                        jwtClaimsExtractor.GetIdentityFromUser(customUser, context.Scheme.Name);
+
+                                    context.Principal = new ClaimsPrincipal(identity);
+                                }
+
+                                context.Success();
+                            }
+                            catch (Exception)
+                            {
+                                // handle validation failure
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                }
+                else
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
-                        var logger = loggerFactory.CreateLogger("JwtClaimsExtractorServices");
-                        logger.LogError(context.Exception.Message);
-                        return Task.CompletedTask;
-                    }
-                };
+                        ValidateIssuerSigningKey = false,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var jwtTokenHandler = context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
+                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<AuthorizedAccountEndpointClient>();
+                            var tokenValidator = context.HttpContext.RequestServices.GetRequiredService<ITokenValidator>();
+
+                            var authorizationHeader = context.Request.Headers["Authorization"].ToString();
+                            if (!string.IsNullOrEmpty(authorizationHeader))
+                            {
+                                context.Token = authorizationHeader.Replace("Bearer ", string.Empty);
+                            }
+
+                            if (context.Token != null)
+                            {
+                                tokenValidator.ValidateToken(context.Token);
+                                var customUser = jwtTokenHandler.HandleTokenAsync(context.Token,
+                                    authorizedAccountEndpointClient, context.HttpContext.RequestAborted).Result;
+
+                                var jwtClaimsExtractor = context.HttpContext.RequestServices
+                                    .GetRequiredService<JwtClaimsExtractor>();
+                                var identity = jwtClaimsExtractor.GetIdentityFromUser(customUser, context.Scheme.Name);
+
+                                context.Principal = new ClaimsPrincipal(identity);
+                            }
+
+                            context.Success();
+                            return Task.CompletedTask;
+                        }
+                    };
+                }
+                
             });
 
 

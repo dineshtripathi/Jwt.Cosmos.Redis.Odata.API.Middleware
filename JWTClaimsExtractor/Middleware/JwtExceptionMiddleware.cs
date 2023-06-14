@@ -14,7 +14,7 @@ public class JwtExceptionMiddleware
                 ex => (StatusCodes.Status401Unauthorized, "Unauthorized access.", ex.Message)
             },
             {typeof(ArgumentNullException), ex => (StatusCodes.Status400BadRequest, "Bad request.", ex.Message)},
-            {typeof(HttpException), ex => (((HttpException) ex).StatusCode, ex.Message, null)},
+            {typeof(HttpException), ex => (((HttpException) ex).StatusCode, ex.Message, null)!},
             {typeof(TimeoutException), ex => (StatusCodes.Status504GatewayTimeout, "Request timed out.", ex.Message)},
             {
                 typeof(TokenValidationException), ex =>
@@ -22,7 +22,7 @@ public class JwtExceptionMiddleware
                     ((TokenValidationException) ex).StatusCode,
                     ((TokenValidationException) ex).Message,
                     ((TokenValidationException) ex).Details
-                )
+                )!
             }
         };
 
