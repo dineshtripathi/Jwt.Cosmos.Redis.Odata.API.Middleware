@@ -1,4 +1,7 @@
 ﻿namespace JWTClaimsExtractor.Constant;
+/// <summary>
+/// The authorization header constant.
+/// </summary>
 
 public static class AuthorizationHeaderConstant
 {

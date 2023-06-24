@@ -11,6 +11,9 @@ using Microsoft.Extensions.Options;
 
 namespace JWTClaimsExtractor.Middleware;
 
+/// <summary>
+/// The jwt bearer token middleware.
+/// </summary>
 
 public class JwtBearerTokenMiddleware
 {
@@ -21,8 +24,18 @@ public class JwtBearerTokenMiddleware
     private readonly RequestDelegate _next;
     private readonly string _claimName;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JwtBearerTokenMiddleware"/> class.
+    /// </summary>
+    /// <param name="next">The next.</param>
+    /// <param name="authorizedEndpointOptions">The authorized endpoint options.</param>
+    /// <param name="appSettingsOptions">The app settings options.</param>
+    /// <param name="jwtTokenExtractor">The jwt token extractor.</param>
+    /// <param name="jwtTokenHandler">The jwt token handler.</param>
+    /// <param name="jwTokenValidator">The jw token validator.</param>
+    /// <param name="logger">The logger.</param>
     public JwtBearerTokenMiddleware(RequestDelegate next,
-        IOptions<AuthorizedAccountEndpointOptions> authorizedEndpointOptions,
+        IOptions<ValidUserEndpointOptions> authorizedEndpointOptions,
         IOptions<AppSettings> appSettingsOptions, IJwtTokenExtractor jwtTokenExtractor,
         IJwtTokenHandler jwtTokenHandler, ITokenValidator jwTokenValidator, ILogger<JwtBearerTokenMiddleware> logger)
     {
@@ -36,7 +49,13 @@ public class JwtBearerTokenMiddleware
             : authorizedEndpointOptions.Value.CustomClaimName;
     }
 
-    public async Task Invoke(HttpContext context, AuthorizedAccountEndpointClient authorizedAccountEndpointClient)
+    /// <summary>
+    /// Invokes the.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="authorizedAccountEndpointClient">The authorized account endpoint client.</param>
+    /// <returns>A Task.</returns>
+    public async Task Invoke(HttpContext context, DataCenterValidUserEndpointClient authorizedAccountEndpointClient)
     {
         // Extract the token from the Authorization header
         if (!_jwtTokenExtractor.TryExtractToken(context, out var token))
@@ -68,6 +87,12 @@ public class JwtBearerTokenMiddleware
         }
     }
 
+    /// <summary>
+    /// Adds the user claim to context.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="claimName">The claim name.</param>
+    /// <param name="user">The user.</param>
     private static void AddUserClaimToContext(HttpContext context, string claimName, CustomUser user)
     {
         var claims = new List<Claim>
@@ -102,7 +127,7 @@ public class JwtBearerTokenMiddleware
     //    _jwtTokenHandler = jwtTokenHandler;
     //    _jwTokenValidator = jwTokenValidator;
     //    claimName = string.IsNullOrWhiteSpace(authorizedEndpointOptions?.Value?.CustomClaimName)
-    //        ? "SseUser"
+    //        ? "CustomClaims"
     //        : authorizedEndpointOptions.Value.CustomClaimName;
     //}
 

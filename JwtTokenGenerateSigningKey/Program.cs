@@ -6,14 +6,25 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace JwtTokenGenerateSigningKey
 {
+    /// <summary>
+    /// The program.
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// Mains the.
+        /// </summary>
+        /// <param name="args">The args.</param>
         static void Main(string[] args)
         {
             var signingKey = GenerateSigningKey();
             var token = GenerateToken(signingKey);
         }
 
+        /// <summary>
+        /// Generates the signing key.
+        /// </summary>
+        /// <returns>A string.</returns>
         static string GenerateSigningKey()
         {
             var hmac = new HMACSHA256();
@@ -27,6 +38,11 @@ namespace JwtTokenGenerateSigningKey
             return key;
         }
 
+        /// <summary>
+        /// Generates the token.
+        /// </summary>
+        /// <param name="signingKey">The signing key.</param>
+        /// <returns>A string.</returns>
         static string GenerateToken(string signingKey)
         {
             var key = signingKey;
@@ -36,19 +52,18 @@ namespace JwtTokenGenerateSigningKey
 
             var claims = new[]
             {
-                new Claim("correlationId", "dec8a02a-3adb-4681-84c3-8d98ef9f16d3"),
-                new Claim("email", "sse-engineering+direct@somoglobal.com"),
-                new Claim("sub", "0a1591ce-e08e-4567-b42b-0fd4ff284e97"),
-                new Claim("given_name", "Direct"),
-                new Claim("family_name", "Customer"),
-                new Claim("orgId", "4c78b740-25a6-47f4-57fa-08daa13cd7b8"),
-                new Claim("orgRole", "Admin"),
+                new Claim("correlationId", Guid.NewGuid().ToString()),
+                new Claim("email", "hitechdinesh@gmail.com"),
+                new Claim("sub", Guid.NewGuid().ToString()),
+                new Claim("given_name", "Dinesh"),
+                new Claim("family_name", "Tripathi"),
+                new Claim("usersCollectionsId", Guid.NewGuid().ToString()),
+                new Claim("dataCenterRole", "Senior Engineer"),
                 new Claim("extension_AgreedTermsAndConditionsVersion", "2021-04-23"),
-                new Claim("name", "sse-engineering+direct@somoglobal.com"),
-                new Claim("IsTpiConsultancy", "false"),
-                new Claim("orgName", "Somo Global"),
-                new Claim("tfp", "B2C_1A_rpSusiOrSspr-Dev"),
-                new Claim("nonce", "43aebb6c-33d5-43a5-b852-4f5c6c3539fa"),
+                new Claim("name", "hitechdinesh@gmail.com"),
+                new Claim("dataCenterName", "AAGS"),
+                new Claim("tfp", "dinesh-github"),
+                new Claim("nonce", Guid.NewGuid().ToString()),
             };
 
 
@@ -73,19 +88,19 @@ namespace JwtTokenGenerateSigningKey
 
             var payload = new JwtPayload
             {
-                {"sub", "0a1591ce-e08e-4567-b42b-0fd4ff284e97"},
-                {"correlationId", "dec8a02a-3adb-4681-84c3-8d98ef9f16d3"},
-                {"email", "sse-engineering+direct@somoglobal.com"},
-                {"given_name", "Direct"},
-                {"family_name", "Customer"},
-                {"orgId", "4c78b740-25a6-47f4-57fa-08daa13cd7b8"},
-                {"orgRole", "Admin"},
+                {"sub", Guid.NewGuid().ToString()},
+                {"correlationId", Guid.NewGuid().ToString()},
+                {"email", "hitechdinesh@gmail.com"},
+                {"given_name", "Dinesh"},
+                {"family_name", "Tripathi"},
+                {"usersCollectionsId", Guid.NewGuid().ToString()},
+                {"dataCenterRole", "Senior Engineer"},
                 {"extension_AgreedTermsAndConditionsVersion", "2021-04-23"},
-                {"name", "sse-engineering+direct@somoglobal.com"},
+                {"name", "hitechdinesh@gmail.com"},
                 {"IsTpiConsultancy", "false"},
-                {"orgName", "Somo Global"},
-                {"tfp", "B2C_1A_rpSusiOrSspr-Dev"},
-                {"nonce", "43aebb6c-33d5-43a5-b852-4f5c6c3539fa"},
+                {"dataCenterName", "AAGS"},
+                {"tfp", "hitechdinesh@gmail.com"},
+                {"nonce", Guid.NewGuid().ToString()},
                 {"exp", unixExpirationTime} 
 
 

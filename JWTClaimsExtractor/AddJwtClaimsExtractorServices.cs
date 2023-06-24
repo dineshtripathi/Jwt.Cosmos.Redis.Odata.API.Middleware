@@ -12,23 +12,32 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JWTClaimsExtractor;
+/// <summary>
+/// The jwt claims extractor services.
+/// </summary>
 
 public static class JwtClaimsExtractorServices
 {
+    /// <summary>
+    /// Adds the jwt claims extractor services.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>An IServiceCollection.</returns>
     public static IServiceCollection AddJwtClaimsExtractorServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var authorizedEndpointOptions = new AuthorizedAccountEndpointOptions();
-        configuration.GetSection("AuthorizedAccountEndpoint").Bind(authorizedEndpointOptions);
+        var validUserEndpointOptions = new ValidUserEndpointOptions();
+        configuration.GetSection("ValidUserEndpoint").Bind(validUserEndpointOptions);
 
         var jwtTokenConfiguration = new JwtTokenConfiguration();
         configuration.GetSection("JwtTokenConfiguration").Bind(jwtTokenConfiguration);
 
-        services.Configure<AuthorizedAccountEndpointOptions>(configuration.GetSection("AuthorizedAccountEndpoint"));
+        services.Configure<ValidUserEndpointOptions>(configuration.GetSection("ValidUserEndpoint"));
         services.Configure<JwtTokenConfiguration>(configuration.GetSection("JwtTokenConfiguration"));
         services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
-        services.AddTransient<AuthorizedAccountEndpointClient>();
-        services.AddTransient<JwtClaims>();
+        services.AddTransient<DataCenterValidUserEndpointClient>();
+     //   services.AddTransient<JwtClaims>();
         services.AddTransient<JwtClaimsExtractor>();
         services.AddTransient<JwtParser>();
         services.AddTransient<IJwtTokenExtractor, JwtTokenExtractor>();
@@ -76,7 +85,7 @@ public static class JwtClaimsExtractorServices
                             var jwtClaimsExtractor =
                                 context.HttpContext.RequestServices.GetRequiredService<JwtClaimsExtractor>();
                             var authorizedAccountEndpointClient = context.HttpContext.RequestServices
-                                .GetRequiredService<AuthorizedAccountEndpointClient>();
+                                .GetRequiredService<DataCenterValidUserEndpointClient>();
 
                             if (context.SecurityToken is not JwtSecurityToken token)
                             {
@@ -113,7 +122,7 @@ public static class JwtClaimsExtractorServices
                         OnMessageReceived = context =>
                         {
                             var jwtTokenHandler = context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
-                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<AuthorizedAccountEndpointClient>();
+                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<DataCenterValidUserEndpointClient>();
                             var tokenValidator = context.HttpContext.RequestServices.GetRequiredService<ITokenValidator>();
 
                             var token = context.Token;
@@ -159,7 +168,7 @@ public static class JwtClaimsExtractorServices
                         OnMessageReceived = context =>
                         {
                             var jwtTokenHandler = context.HttpContext.RequestServices.GetRequiredService<IJwtTokenHandler>();
-                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<AuthorizedAccountEndpointClient>();
+                            var authorizedAccountEndpointClient = context.HttpContext.RequestServices.GetRequiredService<DataCenterValidUserEndpointClient>();
                             var tokenValidator = context.HttpContext.RequestServices.GetRequiredService<ITokenValidator>();
 
                             var authorizationHeader = context.Request.Headers["Authorization"].ToString();

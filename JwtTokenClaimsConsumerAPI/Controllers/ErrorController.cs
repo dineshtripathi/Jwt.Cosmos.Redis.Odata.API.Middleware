@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JwtTokenClaimsConsumerAPI.Controllers;
+/// <summary>
+/// The error controller.
+/// </summary>
 
 [ApiController]
 public class ErrorController : ControllerBase

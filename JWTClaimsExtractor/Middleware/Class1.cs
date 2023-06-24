@@ -1,0 +1,3 @@
+﻿//GENERATE A CLASS TO ADD TWO NUMBERS
+
+    

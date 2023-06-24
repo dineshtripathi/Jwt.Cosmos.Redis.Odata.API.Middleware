@@ -8,21 +8,33 @@ using Microsoft.Extensions.Options;
 namespace JwtTokenClaimsConsumerAPI.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+/// <summary>
+/// The jwt custom user from claims controller.
+/// </summary>
 
 [ApiController]
 [Route("[controller]")]
-public class JwtCustomUserFromClaimsController : ODataController
+public class JwtValidDataCenterUserClaimsController : ODataController
 {
-    private readonly ILogger<JwtCustomUserFromClaimsController> _logger;
-    private readonly AuthorizedAccountEndpointOptions _options;
+    private readonly ILogger<JwtValidDataCenterUserClaimsController> _logger;
+    private readonly ValidUserEndpointOptions _options;
 
-    public JwtCustomUserFromClaimsController(ILogger<JwtCustomUserFromClaimsController> logger,
-        IOptions<AuthorizedAccountEndpointOptions> options)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JwtCustomUserFromClaimsController"/> class.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <param name="options">The options.</param>
+    public JwtValidDataCenterUserClaimsController(ILogger<JwtValidDataCenterUserClaimsController> logger,
+        IOptions<ValidUserEndpointOptions> options)
     {
         _logger = logger;
         _options = options.Value;
     }
-    
+
+    /// <summary>
+    /// Gets the.
+    /// </summary>
+    /// <returns>An IActionResult.</returns>
     [HttpGet("")]
     [EnableQuery]
     public IActionResult Get()
