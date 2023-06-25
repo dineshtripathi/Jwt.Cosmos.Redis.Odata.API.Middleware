@@ -1,8 +1,9 @@
-using JwtValidUsersApi.Model;
+using JwtValidUsersOdataRedis.Api.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace JwtValidUsersApi.Controllers
+namespace JwtValidUsersOdataRedis.Api.Controllers
 {
     /// <summary>
     /// The Valid  User controller.
@@ -32,13 +33,23 @@ namespace JwtValidUsersApi.Controllers
         /// </summary>
         /// <returns>A list of ValidUsers.</returns>
         [HttpGet(Name = "GetAllValidUsers")]
+        [EnableQuery]
         public IEnumerable<ValidUser> GetAllValidUsers(Guid dataCentreId)
         {
             return Enumerable.Range(1, 5).Select(index => new ValidUser
             {
-                accountExpiryDate = DateTime.UtcNow.AddDays(12),
-                userId = Random.Shared.Next(-20, 55).ToString(),
-                department = Departments[Random.Shared.Next(Departments.Length)]
+                JoiningDate = DateTime.UtcNow.AddDays(12),
+                UserId = Random.Shared.Next(-20, 55).ToString(),
+                DepartmentId = Departments[Random.Shared.Next(Departments.Length)],
+                Email = Departments[Random.Shared.Next(Departments.Length)],
+                EmploymentType="",
+                LocationId="",
+                UserCode="",
+                UserContactNumber="",
+                UserFirstName="",
+                UserLastName="",
+                AccountExpiryDate=DateTime.UtcNow,
+
             })
             .ToArray();
         }

@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtTokenClaimsConsumerAPI",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtTokenGenerateSigningKey", "JwtTokenGenerateSigningKey\JwtTokenGenerateSigningKey.csproj", "{7E80C2B8-8BAE-427E-928A-8E9195FD618D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtValidUsersApi", "JwtValidUsersAPI\JwtValidUsersApi\JwtValidUsersApi.csproj", "{4C41801B-31BC-4FFE-8987-107274DE6442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtValidUsersOdataRedis.Api", "JwtValidUsersAPI\JwtValidUsersApi\JwtValidUsersOdataRedis.Api.csproj", "{4C41801B-31BC-4FFE-8987-107274DE6442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtValidUserAPI.Core", "JwtValidUsersAPI\JwtValidUserAPI.Core\JwtValidUserAPI.Core.csproj", "{8C12B68C-1CCC-4CDB-BD8D-CE3861B211F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtValidUserAPI.Repository.Core", "JwtValidUsersAPI\JwtValidUserAPI.Core\JwtValidUserAPI.Repository.Core.csproj", "{8C12B68C-1CCC-4CDB-BD8D-CE3861B211F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtUserData", "JwtUserData", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtUserDataOdataRedisLayer", "JwtUserDataOdataRedisLayer", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

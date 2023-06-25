@@ -1,4 +1,6 @@
-namespace JwtValidUsersApi.Model
+using Newtonsoft.Json;
+
+namespace JwtValidUsersOdataRedis.Api.Model
 {
     /// <summary>
     /// The valid user.
@@ -8,44 +10,48 @@ namespace JwtValidUsersApi.Model
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public string userId { get; set; } = string.Empty;
-
+        [JsonProperty(PropertyName = "id")]
+        public required string UserId { get; set; }
         /// <summary>
         /// Gets or sets the account expiry date.
         /// </summary>
-        public DateTime accountExpiryDate { get; set; } = DateTime.Now;
-
+        public DateTime AccountExpiryDate { get; set; } = DateTime.Now;
         /// <summary>
-        /// Gets or sets the department.
+        /// Gets or sets the department id.
         /// </summary>
-        public string department { get; set; } = string.Empty;
+        public required string DepartmentId { get; set; }
+        /// <summary>
+        /// Gets or sets the location id.
+        /// </summary>
+        public required string LocationId { get; set; }
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
-        public string email { get; set; }
+        public required string Email { get; set; }
         /// <summary>
         /// Gets or sets the user code.
         /// </summary>
-        public string userCode { get; set; }
+        public required string UserCode { get; set; }
         /// <summary>
         /// Gets or sets the user first name.
         /// </summary>
-        public string userFirstName { get; set; }
+        public required string UserFirstName { get; set; }
         /// <summary>
         /// Gets or sets the user last name.
         /// </summary>
-        public string userLastName { get; set; }
+        public required string UserLastName { get; set; }
         /// <summary>
         /// Gets or sets the user contact number.
         /// </summary>
-        public string  userContactNumber { get; set; }
+        public required string UserContactNumber { get; set; }
         /// <summary>
         /// Gets or sets the employment type.
         /// </summary>
-        public  string  employmentType{ get; set; }
+        public required string EmploymentType { get; set; }
         /// <summary>
         /// Gets or sets the joining date.
         /// </summary>
-        public DateTime joiningDate { get;set; }
+        public DateTime JoiningDate { get; set; }
     }
+
 }

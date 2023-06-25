@@ -1,9 +1,9 @@
-namespace JwtValidUserAPI.Core.DTO
+namespace JwtValidUserAPI.Repository.Core.DTO
 {
     /// <summary>
     /// The valid user.
     /// </summary>
-    public class ValidUser
+    public class ValidUser:IEntity
     {
         /// <summary>
         /// Gets or sets the user id.
@@ -22,30 +22,32 @@ namespace JwtValidUserAPI.Core.DTO
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
-        public string email { get; set; }
+        public required string email { get; set; }
         /// <summary>
         /// Gets or sets the user code.
         /// </summary>
-        public string userCode { get; set; }
+        public required string userCode { get; set; }
         /// <summary>
         /// Gets or sets the user first name.
         /// </summary>
-        public string userFirstName { get; set; }
+        public required string userFirstName { get; set; }
         /// <summary>
         /// Gets or sets the user last name.
         /// </summary>
-        public string userLastName { get; set; }
+        public required string userLastName { get; set; }
         /// <summary>
         /// Gets or sets the user contact number.
         /// </summary>
-        public string  userContactNumber { get; set; }
+        public required string  userContactNumber { get; set; }
         /// <summary>
         /// Gets or sets the employment type.
         /// </summary>
-        public  string  employmentType{ get; set; }
+        public required string  employmentType{ get; set; }
         /// <summary>
         /// Gets or sets the joining date.
         /// </summary>
         public DateTime joiningDate { get;set; }
+
+        public string Id { get; }
     }
 }

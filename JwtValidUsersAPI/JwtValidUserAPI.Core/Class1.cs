@@ -1,4 +1,4 @@
-﻿namespace JwtValidUserAPI.Core
+﻿namespace JwtValidUserAPI.Repository.Core
 {
     public class Class1
     {
