@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.Odata.Redis.Api"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.API.Repository.Core", "JwtValidUsersAPI\JwtValidUserAPI.Core\ValidUsers.API.Repository.Core.csproj", "{8C12B68C-1CCC-4CDB-BD8D-CE3861B211F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtUserDataOdataRedisLayer", "JwtUserDataOdataRedisLayer", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtUser.Data.Odata.Redis.Layer", "JwtUser.Data.Odata.Redis.Layer", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
