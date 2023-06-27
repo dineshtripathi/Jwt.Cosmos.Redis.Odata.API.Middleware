@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JWTClaimsExtractor\JWTClaimsExtractor.csproj" />
+    <ProjectReference Include="..\JWTClaimsExtractor\JWT.Bearer.Claims.Auth.Extractor.csproj" />
   </ItemGroup>
 
 </Project>
