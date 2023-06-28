@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWT.Bearer.Claims.Auth.Extractor", "JWTClaimsExtractor\JWT.Bearer.Claims.Auth.Extractor.csproj", "{9D775E09-67EB-42E7-A49A-5A7D10B43E11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JWT.Bearer.Claims.Auth.Extractor", "JWT.Bearer.Claims.Auth.Extractor\JWT.Bearer.Claims.Auth.Extractor.csproj", "{9D775E09-67EB-42E7-A49A-5A7D10B43E11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Consumer.Odata.API", "JwtTokenClaimsConsumerAPI\Client.Consumer.Odata.API.csproj", "{A644413B-DC22-4DE6-9D4D-6F575BCA1183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Consumer.Odata.API", "Client.Consumer.Odata.API\Client.Consumer.Odata.API.csproj", "{A644413B-DC22-4DE6-9D4D-6F575BCA1183}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtToken.GenerateSigningKey.Console", "JwtTokenGenerateSigningKey\JwtToken.GenerateSigningKey.Console.csproj", "{7E80C2B8-8BAE-427E-928A-8E9195FD618D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtToken.GenerateSigningKey.Console", "JwtToken.GenerateSigningKey.Console\JwtToken.GenerateSigningKey.Console.csproj", "{7E80C2B8-8BAE-427E-928A-8E9195FD618D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.Odata.Redis.Api", "JwtValidUsersAPI\JwtValidUsersApi\ValidUsers.Odata.Redis.Api.csproj", "{4C41801B-31BC-4FFE-8987-107274DE6442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.Odata.Redis.Api", "User.Data.Odata.Redis.Layer\ValidUsers.Odata.Redis.Api\ValidUsers.Odata.Redis.Api.csproj", "{4C41801B-31BC-4FFE-8987-107274DE6442}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.API.Repository.Core", "JwtValidUsersAPI\JwtValidUserAPI.Core\ValidUsers.API.Repository.Core.csproj", "{8C12B68C-1CCC-4CDB-BD8D-CE3861B211F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidUsers.API.Repository.Core", "User.Data.Odata.Redis.Layer\ValidUsers.API.Repository.Core\ValidUsers.API.Repository.Core.csproj", "{8C12B68C-1CCC-4CDB-BD8D-CE3861B211F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JwtUser.Data.Odata.Redis.Layer", "JwtUser.Data.Odata.Redis.Layer", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User.Data.Odata.Redis.Layer", "User.Data.Odata.Redis.Layer", "{ABCCFE6C-4175-46D9-A0F7-2D39916161CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
