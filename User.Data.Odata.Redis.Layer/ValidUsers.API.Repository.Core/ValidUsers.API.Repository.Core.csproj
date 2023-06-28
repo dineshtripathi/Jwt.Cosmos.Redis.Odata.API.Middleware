@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Folder Include="EventSourcing\" />
-    <Folder Include="NewFolder\" />
+    <Folder Include="Strategy\" />
   </ItemGroup>
 
   <ItemGroup>
