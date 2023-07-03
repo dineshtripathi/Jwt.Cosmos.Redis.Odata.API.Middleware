@@ -1,1 +1,1 @@
-"# JwtTokenParserAndClaimsExtractor" 
+[![.NET Core Desktop](https://github.com/dineshtripathi/Jwt.Cosmos.Redis.Odata.API.Middleware/actions/workflows/dotnet-desktop.yml/badge.svg?branch=main)](https://github.com/dineshtripathi/Jwt.Cosmos.Redis.Odata.API.Middleware/actions/workflows/dotnet-desktop.yml)
