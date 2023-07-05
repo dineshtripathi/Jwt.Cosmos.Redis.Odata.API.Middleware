@@ -1,17 +1,17 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.ConfigSection;
-using JWTClaimsExtractor.Jwt;
-using JWTClaimsExtractor.Services;
+using JWT.Bearer.Claims.Auth.Extractor.Claims;
+using JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
+using JWT.Bearer.Claims.Auth.Extractor.Jwt;
+using JWT.Bearer.Claims.Auth.Extractor.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JWTClaimsExtractor;
+namespace JWT.Bearer.Claims.Auth.Extractor;
 /// <summary>
 /// The jwt claims extractor services.
 /// </summary>

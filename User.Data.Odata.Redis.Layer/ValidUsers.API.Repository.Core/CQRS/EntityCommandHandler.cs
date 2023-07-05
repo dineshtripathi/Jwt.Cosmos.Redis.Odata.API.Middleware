@@ -1,8 +1,8 @@
-﻿using JwtValidUserAPI.Repository.Core.DTO;
-using JwtValidUserAPI.Repository.Core.Repository;
-using MediatR;
+﻿using MediatR;
+using ValidUsers.API.Repository.Core.DTO;
+using ValidUsers.API.Repository.Core.Repository;
 
-namespace JwtValidUserAPI.Repository.Core.CQRS;
+namespace ValidUsers.API.Repository.Core.CQRS;
 /// <summary>
 /// The create user command handler.
 /// </summary>
@@ -29,6 +29,6 @@ public class EntityCommandHandler<TEntity> : IRequestHandler<CreateEntityCommand
     /// <returns>A Task.</returns>
     public async Task<TEntity> Handle(CreateEntityCommand<TEntity> request, CancellationToken cancellationToken)
     {
-        return await _repository.AddItemAsync(request.Entity, request.Entity.Id, cancellationToken);
+        return await _repository.AddItemAsync(request.Entity, request.Entity.id, cancellationToken);
     }
 }

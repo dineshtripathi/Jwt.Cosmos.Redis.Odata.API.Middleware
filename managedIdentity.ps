@@ -1,0 +1,4 @@
+$redis = Get-AzRedisCache -ResourceGroupName "tst-lab-appservice-serverless" -Name "tst-lab-appservice-redis"
+Set-AzRedisCache -InputObject $redis
+$redis.Identity = New-AzRedisCache -IdentityType UserAssigned -UserAssignedIdentity $identity.Id
+Set-AzRedisCache -ResourceGroupName tst-lab-appservice-serverless -Name tst-lab-appservice-redis -IdentityType UserAssigned -UserAssignedIdentity /subscriptions/b20a7294-6951-4107-88df-d7d320218670/resourceGroups/tst-lab-appservice-serverless/providers/Microsoft.ManagedIdentity/userAssignedIdentities/tst-lab-appservice-managed-identity

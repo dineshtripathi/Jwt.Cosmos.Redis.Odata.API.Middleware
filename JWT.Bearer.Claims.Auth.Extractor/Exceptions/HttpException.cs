@@ -1,4 +1,4 @@
-﻿namespace JWTClaimsExtractor.Exceptions;
+﻿namespace JWT.Bearer.Claims.Auth.Extractor.Exceptions;
 /// <summary>
 /// The http exception.
 /// </summary>

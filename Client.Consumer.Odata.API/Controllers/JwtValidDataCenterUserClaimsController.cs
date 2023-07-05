@@ -1,13 +1,13 @@
 using System.Text.Json;
-using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.ConfigSection;
+using JWT.Bearer.Claims.Auth.Extractor.Claims;
+using JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.Extensions.Options;
 
-namespace JwtTokenClaimsConsumerAPI.Controllers;
+namespace Client.Consumer.Odata.API.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
 /// <summary>
 /// The jwt custom user from claims controller.
 /// </summary>

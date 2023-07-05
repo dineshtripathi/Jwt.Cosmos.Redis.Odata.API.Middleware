@@ -1,4 +1,4 @@
-﻿namespace JwtValidUserAPI.Repository.Core.ConfigSettings.Cosmos;
+﻿namespace ValidUsers.API.Repository.Core.ConfigSettings.Cosmos;
 
 /// <summary>
 /// The container.

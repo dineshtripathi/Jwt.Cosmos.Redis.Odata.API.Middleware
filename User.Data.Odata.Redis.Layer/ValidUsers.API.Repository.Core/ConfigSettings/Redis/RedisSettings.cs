@@ -1,4 +1,4 @@
-﻿namespace JwtValidUserAPI.Repository.Core.ConfigSettings.Redis;
+﻿namespace ValidUsers.API.Repository.Core.ConfigSettings.Redis;
 /// <summary>
 /// The redis settings.
 /// </summary>

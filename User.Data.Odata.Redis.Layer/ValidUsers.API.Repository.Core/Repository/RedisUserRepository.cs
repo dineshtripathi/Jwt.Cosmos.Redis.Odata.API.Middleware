@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Text.Json;
-using JwtValidUserAPI.Repository.Core.DTO;
 using StackExchange.Redis;
+using ValidUsers.API.Repository.Core.DTO;
 
-namespace JwtValidUserAPI.Repository.Core.Repository;
+namespace ValidUsers.API.Repository.Core.Repository;
 
 /// <summary>
 /// The redis user repository.
@@ -15,7 +15,7 @@ public class RedisRepository<T> : IGenericRepository<T> where T : class
 
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="RedisRepository"/> class.
+    /// Initializes a new instance of the <see /> class.
     /// </summary>
     /// <param name="connectionMultiplexer">The connection multiplexer.</param>
     /// <param name="databaseIndex">The database index.</param>
@@ -30,7 +30,7 @@ public class RedisRepository<T> : IGenericRepository<T> where T : class
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>A Task.</returns>
-    public async Task<T> GetItemAsync(string id, CancellationToken cancellationToken)
+    public async Task<T?> GetItemAsync(string id, CancellationToken cancellationToken)
     {
         var data = await _database.StringGetAsync(id);
         return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<T>(data);

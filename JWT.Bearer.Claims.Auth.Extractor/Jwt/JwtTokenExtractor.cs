@@ -1,7 +1,7 @@
-﻿using JWTClaimsExtractor.Constant;
+﻿using JWT.Bearer.Claims.Auth.Extractor.Constant;
 using Microsoft.AspNetCore.Http;
 
-namespace JWTClaimsExtractor.Jwt;
+namespace JWT.Bearer.Claims.Auth.Extractor.Jwt;
 /// <summary>
 /// The jwt token extractor.
 /// </summary>

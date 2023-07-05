@@ -1,6 +1,11 @@
-// Define parameters for resource group name and location
 param resourceGroupName string = 'tst-lab-appservice-serverless'
 param location string = 'uksouth'
+
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: 'tst-lab-appservice-managed-identity'
+  location: location
+}
 
 // Create a storage account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -33,7 +38,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
   location: location
   kind: 'MongoDB'
   properties: {
-    databaseAccountOfferType: 'Standard' // Changed back to 'Standard'
+    databaseAccountOfferType: 'Standard' 
     locations: [
       {
         locationName: location
@@ -57,7 +62,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     accessPolicies: [
       {
         tenantId: subscription().tenantId
-        objectId: 'f4af1079-a94f-4e43-814a-3d63e1f44f94' // Replace with the object ID of the user, group, or service principal
+        objectId: 'f4af1079-a94f-4e43-814a-3d63e1f44f94' 
         permissions: {
           keys: [
             'create'
@@ -115,8 +120,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
     ]
   }
 }
-
-// Create private endpoints for each serviceApologies for the abrupt cut-off again. Here's the continuation and completion of the Bicep script:
 
 resource privateEndpointStorage 'Microsoft.Network/privateEndpoints@2022-07-01' = {
   name: 'storageAccountPrivateEndpoint'
@@ -180,6 +183,7 @@ resource cosmosDBPrivateEndpoint 'Microsoft.Network/privateEndpoints@2020-07-01'
     ]
   }
 }
+
 
 resource keyVaultPrivateEndpoint 'Microsoft.Network/privateEndpoints@2022-07-01' = {
   name: 'tst-lab-appservice-kv-pe'

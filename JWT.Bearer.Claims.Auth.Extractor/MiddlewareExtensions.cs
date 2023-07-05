@@ -1,7 +1,7 @@
-﻿using JWTClaimsExtractor.Middleware;
+﻿using JWT.Bearer.Claims.Auth.Extractor.Middleware;
 using Microsoft.AspNetCore.Builder;
 
-namespace JWTClaimsExtractor;
+namespace JWT.Bearer.Claims.Auth.Extractor;
 /// <summary>
 /// The middleware extensions.
 /// </summary>

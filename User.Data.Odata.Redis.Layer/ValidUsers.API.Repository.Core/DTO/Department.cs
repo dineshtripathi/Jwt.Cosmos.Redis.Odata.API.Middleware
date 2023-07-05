@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace JwtValidUserAPI.Repository.Core.DTO;
+namespace ValidUsers.API.Repository.Core.DTO;
 
 /// <summary>
 /// The department.
@@ -18,5 +18,8 @@ public class Department:IEntity
     /// </summary>
     public required string DepartmentName { get; set; }
 
-    public string Id { get; }
+    /// <summary>
+    /// Gets or sets the id.
+    /// </summary>
+    public required string id { get; set; }
 }

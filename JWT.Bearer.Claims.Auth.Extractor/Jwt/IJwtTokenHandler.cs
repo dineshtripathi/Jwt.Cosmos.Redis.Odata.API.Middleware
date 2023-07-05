@@ -1,7 +1,7 @@
-﻿using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.Services;
+﻿using JWT.Bearer.Claims.Auth.Extractor.Claims;
+using JWT.Bearer.Claims.Auth.Extractor.Services;
 
-namespace JWTClaimsExtractor.Jwt;
+namespace JWT.Bearer.Claims.Auth.Extractor.Jwt;
 
 public interface IJwtTokenHandler
 {

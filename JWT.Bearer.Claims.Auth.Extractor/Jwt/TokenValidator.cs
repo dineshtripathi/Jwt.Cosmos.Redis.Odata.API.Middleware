@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using JWTClaimsExtractor.ConfigSection;
+using JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JWTClaimsExtractor.Jwt;
+namespace JWT.Bearer.Claims.Auth.Extractor.Jwt;
 /// <summary>
 /// The token validator.
 /// </summary>

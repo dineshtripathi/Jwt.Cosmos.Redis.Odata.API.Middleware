@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace JwtValidUserAPI.Repository.Core.Repository;
+namespace ValidUsers.API.Repository.Core.Repository;
 /// <summary>
 /// The repository.
 /// </summary>
@@ -13,7 +13,7 @@ public interface IGenericRepository<T> where T : class
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>A Task.</returns>
-    Task<T> GetItemAsync(string id, CancellationToken cancellationToken);
+    Task<T?> GetItemAsync(string id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets the items async.

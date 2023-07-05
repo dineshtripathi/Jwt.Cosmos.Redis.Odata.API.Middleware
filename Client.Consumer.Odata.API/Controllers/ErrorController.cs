@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JwtTokenClaimsConsumerAPI.Controllers;
+namespace Client.Consumer.Odata.API.Controllers;
 /// <summary>
 /// The error controller.
 /// </summary>

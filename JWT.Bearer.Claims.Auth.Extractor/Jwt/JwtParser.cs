@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 
-namespace JWTClaimsExtractor.Jwt;
+namespace JWT.Bearer.Claims.Auth.Extractor.Jwt;
 /// <summary>
 /// The jwt parser.
 /// </summary>

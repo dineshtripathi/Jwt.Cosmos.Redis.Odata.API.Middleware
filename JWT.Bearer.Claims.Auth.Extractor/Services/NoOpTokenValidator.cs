@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JWTClaimsExtractor.Services;
+namespace JWT.Bearer.Claims.Auth.Extractor.Services;
 /// <summary>
 /// The no op token validator.
 /// </summary>

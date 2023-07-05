@@ -1,12 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.Jwt;
-using JWTClaimsExtractor.Services;
+using JWT.Bearer.Claims.Auth.Extractor.Claims;
+using JWT.Bearer.Claims.Auth.Extractor.Jwt;
+using JWT.Bearer.Claims.Auth.Extractor.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Logging;
 
-namespace JWTClaimsExtractor;
+namespace JWT.Bearer.Claims.Auth.Extractor;
 /// <summary>
 /// The jwt bearer options factory.
 /// </summary>

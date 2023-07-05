@@ -1,4 +1,4 @@
-﻿namespace JWTClaimsExtractor.ConfigSection;
+﻿namespace JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
 /// <summary>
 /// The authorized account endpoint options.
 /// </summary>

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JWTClaimsExtractor.Jwt;
+namespace JWT.Bearer.Claims.Auth.Extractor.Jwt;
 
 public interface ITokenValidator
 {

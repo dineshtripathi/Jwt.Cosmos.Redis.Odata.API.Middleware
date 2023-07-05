@@ -1,8 +1,8 @@
-﻿using JwtValidUserAPI.Repository.Core.DTO;
-using JwtValidUserAPI.Repository.Core.Repository;
-using MediatR;
+﻿using MediatR;
+using ValidUsers.API.Repository.Core.DTO;
+using ValidUsers.API.Repository.Core.Repository;
 
-namespace JwtValidUserAPI.Repository.Core.CQRS;
+namespace ValidUsers.API.Repository.Core.CQRS;
 
 /// <summary>
 /// The get user query handler.
@@ -10,13 +10,13 @@ namespace JwtValidUserAPI.Repository.Core.CQRS;
 
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ValidUser?>
 {
-    private readonly IGenericRepository<ValidUser?> _userRepository;
+    private readonly IGenericRepository<ValidUser> _userRepository;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetUserQueryHandler"/> class.
     /// </summary>
     /// <param name="userRepository">The user repository.</param>
-    public GetUserQueryHandler(IGenericRepository<ValidUser?> userRepository)
+    public GetUserQueryHandler(IGenericRepository<ValidUser> userRepository)
     {
         _userRepository = userRepository;
     }

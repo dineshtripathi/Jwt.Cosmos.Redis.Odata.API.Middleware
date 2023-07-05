@@ -1,4 +1,4 @@
-﻿namespace JWTClaimsExtractor.Constant;
+﻿namespace JWT.Bearer.Claims.Auth.Extractor.Constant;
 /// <summary>
 /// The authorization header constant.
 /// </summary>

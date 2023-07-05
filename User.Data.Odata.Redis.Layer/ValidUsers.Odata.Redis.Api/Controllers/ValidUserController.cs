@@ -1,9 +1,9 @@
-using JwtValidUsersOdataRedis.Api.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using ValidUsers.Odata.Redis.Api.Model;
 
-namespace JwtValidUsersOdataRedis.Api.Controllers
+namespace ValidUsers.Odata.Redis.Api.Controllers
 {
     /// <summary>
     /// The Valid  User controller.

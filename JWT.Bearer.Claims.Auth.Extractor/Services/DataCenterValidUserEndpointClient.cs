@@ -1,9 +1,8 @@
-﻿using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.ConfigSection;
+﻿using JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
-namespace JWTClaimsExtractor.Services;
+namespace JWT.Bearer.Claims.Auth.Extractor.Services;
 /// <summary>
 /// The authorized account endpoint client.
 /// </summary>

@@ -1,4 +1,4 @@
-namespace JwtValidUserAPI.Repository.Core.DTO
+namespace ValidUsers.API.Repository.Core.DTO
 {
     /// <summary>
     /// The valid user.
@@ -48,6 +48,9 @@ namespace JwtValidUserAPI.Repository.Core.DTO
         /// </summary>
         public DateTime joiningDate { get;set; }
 
-        public string Id { get; }
+        /// <summary>
+        /// Gets the id.
+        /// </summary>
+        public required string id { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace JwtTokenGenerateSigningKey
+namespace JwtToken.GenerateSigningKey.Console
 {
     /// <summary>
     /// The program.
@@ -30,9 +30,9 @@ namespace JwtTokenGenerateSigningKey
             var hmac = new HMACSHA256();
             var key = Convert.ToBase64String(hmac.Key);
 
-            Console.WriteLine($"{key}");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("----------------------");
+            System.Console.WriteLine($"{key}");
+            System.Console.WriteLine("----------------------");
+            System.Console.WriteLine("----------------------");
 
 
             return key;
@@ -112,16 +112,16 @@ namespace JwtTokenGenerateSigningKey
             // Token to String so you can use it in your client
             var tokenString = handler.WriteToken(secToken);
 
-            Console.WriteLine(tokenString);
+            System.Console.WriteLine(tokenString);
 
-            Console.WriteLine("\n\n------------------------------" );
-            Console.WriteLine("Consume Token");
+            System.Console.WriteLine("\n\n------------------------------" );
+            System.Console.WriteLine("Consume Token");
 
             var token = handler.ReadJwtToken(tokenString);
 
-            Console.WriteLine(token.Payload.First().Value);
+            System.Console.WriteLine(token.Payload.First().Value);
 
-            Console.ReadLine();
+            System.Console.ReadLine();
             return tokenString;
 
 

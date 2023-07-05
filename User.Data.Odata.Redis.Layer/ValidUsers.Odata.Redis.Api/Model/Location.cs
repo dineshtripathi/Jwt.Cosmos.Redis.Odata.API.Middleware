@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace JwtValidUsersOdataRedis.Api.Model;
+namespace ValidUsers.Odata.Redis.Api.Model;
 
 /// <summary>
 /// The location.

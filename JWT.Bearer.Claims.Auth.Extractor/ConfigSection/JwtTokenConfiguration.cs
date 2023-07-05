@@ -1,4 +1,4 @@
-﻿namespace JWTClaimsExtractor.ConfigSection;
+﻿namespace JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
 /// <summary>
 /// The jwt token configuration.
 /// </summary>

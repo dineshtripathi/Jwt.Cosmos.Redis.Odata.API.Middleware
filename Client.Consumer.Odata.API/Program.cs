@@ -1,4 +1,4 @@
-using JWTClaimsExtractor;
+using JWT.Bearer.Claims.Auth.Extractor;
 
 var builder = WebApplication.CreateBuilder(args);
 

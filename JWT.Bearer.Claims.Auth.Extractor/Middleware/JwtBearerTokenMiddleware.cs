@@ -1,15 +1,15 @@
 ﻿using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text.Json;
-using JWTClaimsExtractor.Claims;
-using JWTClaimsExtractor.ConfigSection;
-using JWTClaimsExtractor.Jwt;
-using JWTClaimsExtractor.Services;
+using JWT.Bearer.Claims.Auth.Extractor.Claims;
+using JWT.Bearer.Claims.Auth.Extractor.ConfigSection;
+using JWT.Bearer.Claims.Auth.Extractor.Jwt;
+using JWT.Bearer.Claims.Auth.Extractor.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace JWTClaimsExtractor.Middleware;
+namespace JWT.Bearer.Claims.Auth.Extractor.Middleware;
 
 /// <summary>
 ///     The jwt bearer token middleware.

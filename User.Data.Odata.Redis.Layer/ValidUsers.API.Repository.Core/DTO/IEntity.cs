@@ -1,4 +1,4 @@
-namespace JwtValidUserAPI.Repository.Core.DTO;
+namespace ValidUsers.API.Repository.Core.DTO;
 /// <summary>
 /// The entity.
 /// </summary>
@@ -8,5 +8,5 @@ public interface IEntity
     /// <summary>
     /// Gets the id.
     /// </summary>
-    string Id { get; }
+    string id { get; }
 }

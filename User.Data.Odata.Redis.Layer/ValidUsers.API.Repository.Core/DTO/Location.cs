@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace JwtValidUserAPI.Repository.Core.DTO;
+namespace ValidUsers.API.Repository.Core.DTO;
 
 /// <summary>
 /// The location.
@@ -18,5 +18,5 @@ public class Location:IEntity
     /// </summary>
     public string? LocationName { get; set; }
 
-    public string Id { get; }
+    public string id { get; }
 }

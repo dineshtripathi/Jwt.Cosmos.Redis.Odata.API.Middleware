@@ -1,9 +1,9 @@
-using JwtValidUsersOdataRedis.Api.Model;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using ValidUsers.Odata.Redis.Api.Model;
 
-namespace JwtValidUsersOdataRedis.Api
+namespace ValidUsers.Odata.Redis.Api
 {
     /// <summary>
     /// The program.

@@ -1,7 +1,7 @@
-﻿using JwtValidUserAPI.Repository.Core.DTO;
-using MediatR;
+﻿using MediatR;
+using ValidUsers.API.Repository.Core.DTO;
 
-namespace JwtValidUserAPI.Repository.Core.CQRS;
+namespace ValidUsers.API.Repository.Core.CQRS;
 
 /// <summary>
 /// The create user command.

@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
-using System.Net;
 using Microsoft.Azure.Cosmos;
 
-namespace JwtValidUserAPI.Repository.Core.Repository;
+namespace ValidUsers.API.Repository.Core.Repository;
 
 /// <summary>
 /// The cosmos repository.
@@ -32,10 +31,10 @@ public class CosmosRepository<T> : IGenericRepository<T> where T : class
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken"></param>
     /// <returns>A Task.</returns>
-    public async Task<T> GetItemAsync(string id,CancellationToken cancellationToken)
+    public async Task<T?> GetItemAsync(string id,CancellationToken cancellationToken)
     {
             {
-                ItemResponse<T> response = await _container.ReadItemAsync<T>(id, new PartitionKey(id), cancellationToken: cancellationToken);
+                ItemResponse<T?> response = await _container.ReadItemAsync<T?>(id, new PartitionKey(id), cancellationToken: cancellationToken);
                 return response.Resource;
             }
     }
