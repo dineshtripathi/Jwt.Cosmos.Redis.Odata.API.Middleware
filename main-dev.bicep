@@ -1,22 +1,50 @@
-param environment string = 'dev'
-param resourceGroupName string = '${environment}-lab-appservice-serverless'
-param location string = 'uksouth'
+param environment string
+param resourceGroupName string
+param location string
+param principalId string
+param storageAccountSku string
+param redisCacheSku string
+param redisCacheFamily string
+param redisCacheCapacity int
+param appServicePlanSku string
+param appServicePlanTier string
+param appServicePlanCapacity int
+param appConfigurationSku string
+param metricThreshold int
+param appServiceMetricName string
+param storageAccountMetricName string
+param redisCacheMetricName string
+param cosmosDbMetricName string
+param keyVaultMetricName string
+param appServiceTimeAggregation string
+param storageAccountTimeAggregation string
+param redisCacheTimeAggregation string
+param cosmosDbTimeAggregation string
+param keyVaultTimeAggregation string
+param evaluationFrequency string
+param windowSize string
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: '${environment}-lab-appservice-managed-identity'
   location: location
 }
 
 // Create a storage account
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: '${environment}labserverlessstorage'
   location: location
   kind: 'StorageV2'
   sku: {
-    name: 'Standard_GRS'
+    name: storageAccountSku
   }
   properties: {
     isHnsEnabled: true
+  }
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
   }
 }
 
@@ -26,14 +54,20 @@ resource redisCache 'Microsoft.Cache/Redis@2022-06-01' = {
   location: location
   properties: {
     sku: {
-      name: 'Basic'
-      family: 'C'
-      capacity: 0
+      name: redisCacheSku
+      family: redisCacheFamily
+      capacity: redisCacheCapacity
+    }
+  }
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
     }
   }
 }
 
-resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
+resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: '${environment}-lab-appservice-cosmosdb'
   location: location
   kind: 'MongoDB'
@@ -46,6 +80,12 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
         isZoneRedundant: false
       }
     ]
+  }
+  identity: {
+    type: 'SystemAssigned,UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
   }
 }
 
@@ -62,10 +102,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     accessPolicies: [
       {
         tenantId: subscription().tenantId
-        objectId: 'f4af1079-a94f-4e43-814a-3d63e1f44f94' 
+        objectId: principalId
         permissions: {
           keys: ['Get', 'List', 'Update', 'Create', 'Import', 'Delete', 'Recover', 'Backup', 'Restore']
-     
         }
       }
     ]
@@ -77,9 +116,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${environment}-lab-appservice-plan'
   location: location
   sku: {
-    name: 'F1'
-    tier: 'Free'
-    capacity: 1
+    name: appServicePlanSku
+    tier: appServicePlanTier
+    capacity: appServicePlanCapacity
   }
 }
 
@@ -93,26 +132,38 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       windowsFxVersion: 'DOTNETCORE|6.0'
     }
   }
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2022-05-01' = {
+resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   name: '${environment}-lab-app-config'
   location: location
   sku: {
-    name: 'standard'
+    name: appConfigurationSku
+  }
+  identity: {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
   }
 }
 
 // Assign IAM role
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+/* resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(resourceGroupName, 'Contributor')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor role
-    principalId: 'f4af1079-a94f-4e43-814a-3d63e1f44f94'
+    principalId: principalId
     principalType: 'User'
     scope: resourceGroup().id
   }
-}
+} */
 
 // Create an Application Insights instance
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
@@ -145,18 +196,18 @@ resource appServiceAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     scopes: [
       appService.id
     ]
-    evaluationFrequency: 'PT1H'
-    windowSize: 'PT1H'
+    evaluationFrequency: evaluationFrequency
+    windowSize: windowSize
     criteria: {
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
           criterionType:'StaticThresholdCriterion'
           name: 'Metric1'
-          metricName: 'CpuTime'
+          metricName: appServiceMetricName
           operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Count'
+          threshold: metricThreshold
+          timeAggregation: appServiceTimeAggregation
         }
       ]
     }
@@ -179,18 +230,18 @@ resource StorageAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     scopes: [
       storageAccount.id
     ]
-    evaluationFrequency: 'PT1H'
-    windowSize: 'PT1H'
+    evaluationFrequency: evaluationFrequency
+    windowSize: windowSize
     criteria: {
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
           criterionType:'StaticThresholdCriterion'
           name: 'Metric1'
-          metricName: 'UsedCapacity'
+          metricName: storageAccountMetricName
           operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Average'
+          threshold: metricThreshold
+          timeAggregation: storageAccountTimeAggregation
         }
       ]
     }
@@ -213,18 +264,18 @@ resource RedisAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     scopes: [
       redisCache.id
     ]
-    evaluationFrequency: 'PT1H'
-    windowSize: 'PT1H'
+    evaluationFrequency: evaluationFrequency
+    windowSize: windowSize
     criteria: {
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
           criterionType:'StaticThresholdCriterion'
           name: 'Metric1'
-          metricName: 'CacheHits'
+          metricName: redisCacheMetricName
           operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Count'
+          threshold: metricThreshold
+          timeAggregation: redisCacheTimeAggregation
         }
       ]
     }
@@ -247,18 +298,18 @@ resource CosmosAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     scopes: [
       cosmosDB.id
     ]
-    evaluationFrequency: 'PT1H'
-    windowSize: 'PT1H'
+    evaluationFrequency: evaluationFrequency
+    windowSize: windowSize
     criteria: {
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
           criterionType:'StaticThresholdCriterion'
           name: 'Metric1'
-          metricName: 'TotalRequestUnits'
+          metricName: cosmosDbMetricName
           operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Total'
+          threshold: metricThreshold
+          timeAggregation: cosmosDbTimeAggregation
         }
       ]
     }
@@ -269,6 +320,7 @@ resource CosmosAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     ]
   }
 }
+
 // Create an Azure Monitor Alert Rule keyVault
 resource keyVaultAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
   name: '${environment}labkeyvaultalertruleappservice'
@@ -280,18 +332,18 @@ resource keyVaultAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     scopes: [
       keyVault.id
     ]
-    evaluationFrequency: 'PT1H'
-    windowSize: 'PT1H'
+    evaluationFrequency: evaluationFrequency
+    windowSize: windowSize
     criteria: {
       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
       allOf: [
         {
           criterionType:'StaticThresholdCriterion'
           name: 'Metric1'
-          metricName: 'ServiceApiLatency'
+          metricName: keyVaultMetricName
           operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Count'
+          threshold: metricThreshold
+          timeAggregation: keyVaultTimeAggregation
         }
       ]
     }
@@ -302,36 +354,31 @@ resource keyVaultAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     ]
   }
 }
-// Create an Azure Monitor Alert Rule appConfig
-/* resource appConfigAlertRule 'Microsoft.Insights/metricAlerts@2018-03-01' = {
-  name: '${environment}labappconfigalertruleappservice'
-  location: 'Global'
+
+// Assign IAM role
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroupName, 'Contributor')
   properties: {
-    description: 'Alert rule'
-    severity: 3
-    enabled: true
-    scopes: [
-      appConfiguration.id
-    ]
-    evaluationFrequency: 'PT1M'
-    windowSize: 'PT5M'
-    criteria: {
-      'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-      allOf: [
-        {
-          criterionType:'StaticThresholdCriterion'
-          name: 'Metric1'
-          metricName: 'CpuTime'
-          operator: 'GreaterThan'
-          threshold: 90
-          timeAggregation: 'Average'
-        }
-      ]
-    }
-    actions: [
-      {
-        actionGroupId: actionGroup.id
-      }
-    ]
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor role
+    principalId: principalId
+    principalType: 'User'
+    scope: resourceGroup().id
   }
-} */
+  dependsOn: [
+    managedIdentity
+    storageAccount
+    redisCache
+    cosmosDB
+    keyVault
+    appServicePlan
+    appService
+    appConfiguration
+    appInsights
+    actionGroup
+    appServiceAlertRule
+    StorageAlertRule
+    RedisAlertRule
+    CosmosAlertRule
+    keyVaultAlertRule
+  ]
+}

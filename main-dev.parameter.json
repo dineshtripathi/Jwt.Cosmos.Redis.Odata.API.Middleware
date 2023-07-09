@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "environment": {
+        "value": "dev"
+      },
+      "resourceGroupName": {
+        "value": "dev-lab-appservice-serverless"
+      },
+      "location": {
+        "value": "uksouth"
+      },
+      "principalId": {
+        "value": "f4af1079-a94f-4e43-814a-3d63e1f44f94"
+      },
+      "storageAccountSku": {
+        "value": "Standard_GRS"
+      },
+      "redisCacheSku": {
+        "value": "Basic"
+      },
+      "redisCacheFamily": {
+        "value": "C"
+      },
+      "redisCacheCapacity": {
+        "value": 0
+      },
+      "appServicePlanSku": {
+        "value": "F1"
+      },
+      "appServicePlanTier": {
+        "value": "Free"
+      },
+      "appServicePlanCapacity": {
+        "value": 1
+      },
+      "appConfigurationSku": {
+        "value": "standard"
+      },
+      "metricThreshold": {
+        "value": 90
+      },
+      "appServiceMetricName": {
+        "value": "CpuTime"
+      },
+      "storageAccountMetricName": {
+        "value": "UsedCapacity"
+      },
+      "redisCacheMetricName": {
+        "value": "CacheHits"
+      },
+      "cosmosDbMetricName": {
+        "value": "TotalRequestUnits"
+      },
+      "keyVaultMetricName": {
+        "value": "ServiceApiLatency"
+      },
+      "appServiceTimeAggregation": {
+        "value": "Count"
+      },
+      "storageAccountTimeAggregation": {
+        "value": "Average"
+      },
+      "redisCacheTimeAggregation": {
+        "value": "Count"
+      },
+      "cosmosDbTimeAggregation": {
+        "value": "Total"
+      },
+      "keyVaultTimeAggregation": {
+        "value": "Count"
+      },
+      "evaluationFrequency": {
+        "value": "PT1H"
+      },
+      "windowSize": {
+        "value": "PT1H"
+      }
+    }
+  }
+  
